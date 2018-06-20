@@ -258,7 +258,8 @@ public:
 
     std::recursive_mutex	cs_RenderEnter;
     std::recursive_mutex	cs_RenderLeave;
-	volatile BOOL		mt_bMustExit;
+    volatile BOOL		mt_bMustExit;
+    volatile BOOL		mt_bRenderMustExit;
 
 	ICF		void			remove_from_seq_parallel	(const fastdelegate::FastDelegate0<> &delegate)
 	{

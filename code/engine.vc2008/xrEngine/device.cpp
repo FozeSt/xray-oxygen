@@ -185,8 +185,7 @@ void mt_render(void* ptr)
     {
         Device.cs_RenderEnter.lock();
 
-        if (Device.mt_bMustExit) {
-            //Device.mt_bMustExit = FALSE;				// Important!!!
+        if (Device.mt_bRenderMustExit) {
             Device.cs_RenderEnter.unlock();					// Important!!!
             return;
         }
@@ -427,6 +426,7 @@ void CRenderDevice::Run			()
 	mt_csEnter.lock			();
     cs_RenderEnter.lock();
 	mt_bMustExit				= FALSE;
+    mt_bRenderMustExit          = FALSE;
 	thread_spawn				(mt_Thread,"X-RAY Secondary thread",0,0);
 	thread_spawn				(mt_render,"X-RAY Render thread",0,0);
 
@@ -437,7 +437,7 @@ void CRenderDevice::Run			()
 	m_pRender->ClearTarget		();
 
 	message_loop				();
-
+    mt_bRenderMustExit = TRUE;
 	seqAppEnd.Process		(rp_AppEnd);
 
 	// Stop Balance-Thread
